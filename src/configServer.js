@@ -4,8 +4,7 @@ import cors from 'cors'
 import { findAvailablePort, getConfig } from './utils'
 
 // Starts an express development sever to communicate between browser and node environments
-export async function startConfigServer () {
-  const config = getConfig()
+export async function startConfigServer (config) {
   // scan a range
   const port = process.env.PORT || (await findAvailablePort(8000))
   process.env.STATIC_ENDPOINT = `http://127.0.0.1:${port}`

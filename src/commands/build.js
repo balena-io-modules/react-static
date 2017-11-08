@@ -5,11 +5,12 @@ import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import { buildProductionBundles } from '../webpack'
 import { getConfig, copyPublicFolder } from '../utils'
 
-export default async () => {
+export default async (conf) => {
   try {
-    const config = getConfig()
+    const config = getConfig(conf)
     await fs.remove(config.paths.DIST)
 
+    const siteProps = await config.getSiteProps({ dev: true })
     console.log('')
     console.time('=> Site is ready for production!')
 
@@ -20,7 +21,7 @@ export default async () => {
 
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
-    config.routes = await config.getRoutes({ dev: false })
+    config.routes = await config.getRoutes({ dev: false, siteProps })
     await prepareRoutes(config)
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 

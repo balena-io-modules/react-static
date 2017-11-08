@@ -11,10 +11,10 @@ import nodeExternals from 'webpack-node-externals'
 import rules from './rules'
 
 export default function ({ config, isNode }) {
-  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
+  const { ROOT, DIST, NODE_MODULES, LANDR_NODE_MODULES, LOCAL_NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
   return {
-    context: path.resolve(__dirname, '../node_modules'),
-    entry: path.resolve(ROOT, config.entry),
+    context: path.resolve(__dirname, '../../node_modules'),
+    entry: path.resolve(config.entry),
     output: {
       filename: isNode ? 'app.static.[hash:8].js' : 'app.[hash:8].js',
       path: DIST,
@@ -22,12 +22,11 @@ export default function ({ config, isNode }) {
       libraryTarget: isNode ? 'umd' : undefined,
     },
     target: isNode ? 'node' : undefined,
-    externals: isNode ? [nodeExternals()] : [],
     module: {
-      rules: rules(config, { stage: 'prod' }),
+      rules: rules({ config, stage: 'prod' })
     },
     resolve: {
-      modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
+      modules: [ LOCAL_NODE_MODULES, LANDR_NODE_MODULES, SRC, DIST ],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [

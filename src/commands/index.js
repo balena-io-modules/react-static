@@ -1,4 +1,4 @@
-import 'babel-register'
+// import 'babel-register'
 import chalk from 'chalk'
 import fs from 'fs'
 

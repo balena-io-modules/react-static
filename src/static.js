@@ -17,7 +17,6 @@ export const exportRoutes = async ({ config }) => {
   const appJs = appJsPath.split('/').pop()
   const appStaticJsPath = glob.sync(path.resolve(config.paths.DIST, 'app.static.*.js'))[0]
   const Comp = require(appStaticJsPath).default
-
   const DocumentTemplate = config.Document || DefaultDocument
 
   const siteProps = await config.getSiteProps({ dev: false })
@@ -65,7 +64,6 @@ export const exportRoutes = async ({ config }) => {
 
       // Allow extractionso of meta via config.renderToString
       const appHtml = await config.renderToHtml(renderToString, ContextualComp, renderMeta)
-
       // Extract head calls using Helmet
       const helmet = Helmet.renderStatic()
       const head = {
@@ -227,7 +225,7 @@ export const prepareRoutes = async config => {
   })
 
   const templateImports = templates
-    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '../${template}'`)
+    .map(template => `import ${template.replace(/[^a-zA-Z]/g, '_')} from '${template}'`)
     .join('\n')
 
   const templateMap = `const templateMap = {
@@ -293,6 +291,8 @@ export const prepareRoutes = async config => {
     ${templateMap}
     ${templateTree}
     ${getTemplateForPath}
+
+    export const paths = ${JSON.stringify(config.routes)}
 
     export default class Routes extends Component {
       render () {

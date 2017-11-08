@@ -29,9 +29,7 @@ export const findAvailablePort = start =>
   )
 
 // Retrieves the static.config.js from the current project directory
-export const getConfig = () => {
-  const config = require(path.resolve(path.join(process.cwd(), 'static.config.js'))).default
-
+export const getConfig = (config) => {
   // path defaults
   config.paths = {
     src: 'src',
@@ -44,18 +42,18 @@ export const getConfig = () => {
   const ROOT = path.resolve(process.cwd())
 
   // Use the root to resolve all other relative paths
-  const resolvePath = relativePath => path.resolve(path.join(ROOT, relativePath))
 
   // Resolve all paths
   const paths = {
     ROOT,
-    LOCAL_NODE_MODULES: path.resolve(__dirname, '../node_modules'),
-    SRC: resolvePath(config.paths.src),
-    DIST: resolvePath(config.paths.dist),
-    PUBLIC: resolvePath(config.paths.public),
-    NODE_MODULES: resolvePath('node_modules'),
-    PACKAGE: resolvePath('package.json'),
-    HTML_TEMPLATE: path.join(resolvePath('dist'), 'index.html'),
+    LANDR_NODE_MODULES: path.resolve(config.paths.local_node_modules),
+    LOCAL_NODE_MODULES: path.resolve(__dirname + '/../node_modules'),
+    SRC: path.resolve(config.paths.src),
+    DIST: path.resolve(config.paths.dist),
+    PUBLIC: path.resolve(config.paths.public),
+    NODE_MODULES: path.resolve('node_modules'),
+    PACKAGE: path.resolve('package.json'),
+    HTML_TEMPLATE: path.join(path.resolve(config.paths.dist), 'index.html'),
   }
 
   const siteRoot = config.siteRoot ? config.siteRoot.replace(/\/{0,}$/g, '') : null

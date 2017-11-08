@@ -6,11 +6,12 @@ import WebpackDevServer from 'webpack-dev-server'
 // import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware'
 //
 import { getStagedRules } from './rules'
-import { findAvailablePort } from './utils'
+import { findAvailablePort } from '../utils'
 
 // Builds a compiler using a stage preset, then allows extension via
 // webpackConfigurator
 export function webpackConfig ({ config, stage }) {
+
   let webpackConfig
   if (stage === 'dev') {
     webpackConfig = require('./webpack.config.dev').default({ config })
@@ -135,7 +136,8 @@ export async function startDevServer ({ config }) {
 
   console.log('=> Building App Bundle...')
   console.time(chalk.green('=> [\u2713] Build Complete'))
-  const devServer = new WebpackDevServer(devCompiler, {
+
+  const devServerConfig = {
     hot: true,
     disableHostCheck: true,
     contentBase: config.paths.DIST,
@@ -149,13 +151,15 @@ export async function startDevServer ({ config }) {
     ...config.devServer,
     port,
     host,
-  })
+  }
+  const devServer = new WebpackDevServer(devCompiler, devServerConfig)
 
   return new Promise((resolve, reject) => {
     devServer.listen(port, err => {
       if (err) {
         return reject(err)
       }
+      config.onStart(devServerConfig)
       resolve()
     })
   })

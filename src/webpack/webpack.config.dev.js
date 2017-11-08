@@ -7,14 +7,14 @@ import path from 'path'
 import rules from './rules'
 
 export default function ({ config }) {
-  const { ROOT, DIST, NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
+  const { ROOT, DIST, NODE_MODULES, LANDR_NODE_MODULES, LOCAL_NODE_MODULES, SRC, HTML_TEMPLATE } = config.paths
   return {
     context: path.resolve(__dirname, '../node_modules'),
     entry: [
       require.resolve('react-hot-loader/patch'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('webpack/hot/only-dev-server'),
-      path.resolve(ROOT, config.entry),
+      path.resolve(config.entry),
     ],
     output: {
       filename: 'app.[hash:8].js',
@@ -25,7 +25,7 @@ export default function ({ config }) {
       rules: rules({ config, stage: 'dev' }),
     },
     resolve: {
-      modules: [path.resolve(__dirname, '../node_modules'), NODE_MODULES, SRC, DIST],
+      modules: [LOCAL_NODE_MODULES, LANDR_NODE_MODULES, SRC, DIST],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [

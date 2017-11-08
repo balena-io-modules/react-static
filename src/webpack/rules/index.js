@@ -5,11 +5,11 @@ import fileLoader from './fileLoader'
 export const getStagedRules = args => ({
   jsLoader: jsLoader(args),
   cssLoader: cssLoader(args),
-  fileLoader: fileLoader(args),
+  fileLoader: fileLoader(args)
 })
 
 export default args => [
   {
-    oneOf: [jsLoader(args), cssLoader(args), fileLoader(args)],
+    oneOf: [jsLoader(args), fileLoader(args)],
   },
 ]

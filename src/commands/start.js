@@ -11,12 +11,10 @@ import {
 } from '../utils'
 import { startConfigServer } from '../configServer'
 //
-
-export default async () => {
+export default async (conf) => {
   try {
-    // Get the config
-    const config = getConfig()
-
+    const config = await getConfig(conf)
+    
     // Clean the dist folder
     await fs.remove(config.paths.DIST)
 
@@ -34,18 +32,18 @@ export default async () => {
     })
 
     // Copy the public directory over
-    console.log('')
-    console.log('=> Copying public directory...')
-    console.time(chalk.green('=> [\u2713] Public directory copied'))
-    copyPublicFolder(config)
-    console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
+    // console.log('')
+    // console.log('=> Copying public directory...')
+    // console.time(chalk.green('=> [\u2713] Public directory copied'))
+    // copyPublicFolder(config)
+    // console.timeEnd(chalk.green('=> [\u2713] Public directory copied'))
 
     // Build the dynamic routes file (react-static-routes)
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
-    config.routes = await config.getRoutes({ dev: true })
+    config.routes = await config.getRoutes({ dev: true, props: siteProps })
     await prepareRoutes(config)
-    await startConfigServer()
+    await startConfigServer(config)
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
     // Build the JS bundle
