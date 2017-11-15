@@ -1,5 +1,5 @@
 {
-  "name": "react-static",
+  "name": "@resin.io/react-static",
   "version": "4.0.1",
   "main": "lib/index.js",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "test": "eslint src examples",
     "test-webpack": "jest"
   },
-  "repository": "nozzle/react-static",
+  "repository": "resin-io-modules/react-static",
   "devDependencies": {
     "eslint": "^4.3.0",
     "eslint-config-react-tools": "^1.0.6",

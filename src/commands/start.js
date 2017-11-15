@@ -14,7 +14,7 @@ import { startConfigServer } from '../configServer'
 export default async (conf) => {
   try {
     const config = await getConfig(conf)
-    
+
     // Clean the dist folder
     await fs.remove(config.paths.DIST)
 
@@ -41,7 +41,7 @@ export default async (conf) => {
     // Build the dynamic routes file (react-static-routes)
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
-    config.routes = await config.getRoutes({ dev: true, props: siteProps })
+    config.routes = await config.getRoutes({ dev: true, siteProps })
     await prepareRoutes(config)
     await startConfigServer(config)
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
