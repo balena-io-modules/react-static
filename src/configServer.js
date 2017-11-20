@@ -24,7 +24,8 @@ export async function startConfigServer (config) {
 
   configApp.get('/getRoutes', async (req, res, next) => {
     try {
-      const routes = await config.getRoutes({ dev: true })
+      const siteProps = await config.getSiteProps({ dev: true })
+      const routes = await config.getRoutes({ dev: true, siteProps })
 
       // Once all of the routes have been resolved, listen on individual
       // route endpoints

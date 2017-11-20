@@ -6,7 +6,6 @@ import { renderToString } from 'react-dom/server'
 import fs from 'fs-extra'
 import glob from 'glob'
 import path from 'path'
-import Helmet from 'react-helmet'
 //
 import { DefaultDocument } from './RootComponents'
 
@@ -17,6 +16,9 @@ export const exportRoutes = async ({ config }) => {
   const appJs = appJsPath.split('/').pop()
   const appStaticJsPath = glob.sync(path.resolve(config.paths.DIST, 'app.static.*.js'))[0]
   const Comp = require(appStaticJsPath).default
+  const Helmet = require(appStaticJsPath).Head
+  const ServerStyleSheet = require(appStaticJsPath).ServerStyleSheet
+
   const DocumentTemplate = config.Document || DefaultDocument
 
   const siteProps = await config.getSiteProps({ dev: false })
@@ -64,7 +66,9 @@ export const exportRoutes = async ({ config }) => {
       let head
 
       const renderStringAndHead = Comp => {
-        const appHtml = renderToString(Comp)
+        const sheet = new ServerStyleSheet()
+        const appHtml = renderToString(sheet.collectStyles(Comp))
+        renderMeta.styleTags = sheet.getStyleElement()
         // Extract head calls using Helmet synchronously right after renderToString
         // to not introduce any race conditions in the meta data rendering
         const helmet = Helmet.renderStatic()
@@ -120,6 +124,7 @@ export const exportRoutes = async ({ config }) => {
             {head.noscript}
             {head.script}
             {head.style}
+            {renderMeta.styleTags}
             {childrenArray}
           </head>
         )
