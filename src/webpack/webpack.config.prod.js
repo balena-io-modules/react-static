@@ -24,7 +24,7 @@ export default function ({ config, isNode }) {
       rules: rules({ config, stage: 'prod' })
     },
     resolve: {
-      modules: [ LOCAL_NODE_MODULES, LANDR_NODE_MODULES, SRC, DIST ],
+      modules: [ NODE_MODULES, LOCAL_NODE_MODULES, LANDR_NODE_MODULES, SRC, DIST ],
       extensions: ['.js', '.json', '.jsx'],
     },
     plugins: [
