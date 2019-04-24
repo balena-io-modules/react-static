@@ -1,5 +1,5 @@
 {
-  "name": "@resin.io/react-static",
+  "name": "@balena.io/react-static",
   "version": "4.0.2",
   "main": "lib/index.js",
   "license": "MIT",
